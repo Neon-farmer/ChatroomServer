@@ -1,0 +1,47 @@
+﻿@page "/Data/Users"
+
+@using DataAccessLibrary;
+@using DataAccessLibrary.Models;
+
+@inject IUserData _db;
+
+
+
+<h3>Users Page</h3>
+
+<h4>Users</h4>
+@if(UsersList is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+            </tr>
+        </thead>    
+        <tbody>
+            @foreach(var User in UsersList)
+            {
+            <tr>
+                <td>@User.UserName</td>
+                <td>@User.UserEmail</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+    
+}
+
+@code {
+    private List<UserModel>? UsersList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        UsersList = await _db.GetAllUsers();
+        
+    }
+}
